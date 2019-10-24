@@ -1,0 +1,51 @@
+// A simple class definition for a graph node could look essentially the same as a tree node.
+ class Graph {
+ public Node[] nodes;
+ }
+
+ class Node {
+ public String name;
+ public Node[] children;
+ } 
+ 
+ 
+// In DFS, we visit a node a and then iterate through each of a's neighbors. When visiting a node b that is a
+// neighbor of a, we visit all of b's neighbors before going on to a's other neighbors. That is, a exhaustively
+// searches b's branch before any of its other neighbors.
+// Note that pre-order and other forms of tree traversal are a form of DFS. The key difference is that when
+// implementing this algorithm for a graph, we must check if the node has been visited. If we don't, we risk
+// getting stuck in an infinite loop.
+// The pseudocode below implements DFS.
+
+void search(Node root) {
+ if (root== null) return;
+ visit(root);
+ root.visited= true;
+ foreach(Node n in root.adjacent) {
+ if (n.visited == false) {
+ search(n);
+ }
+}
+} 
+
+// BFS is a bit less intuitive, and many interviewees struggle with the implementation unless they are already
+// familiar with it. The main tripping point is the (false) assumption that BFS is recursive. It's not. Instead, it
+// uses a queue.
+// In BFS, node a visits each of a's neighbors before visiting any of their neighbors. You can think of this as
+// searching level by level out from a. An iterative solution involving a queue usually works best.
+void search(Node root) {
+ Queue queue = new Queue();
+ root.marked= true;
+ queue.enqueue(root); // Add to the end of queue
+
+ while (!queue.isEmpty()) {
+ Node r = queue.dequeue(); // Remove from the front of the queue
+ visit(r);
+ foreach (Node n in r.adjacent) {
+  if (n.marked == false) {
+   n.marked = true;
+   queue.enqueue(n);
+ }
+}
+}
+} 
